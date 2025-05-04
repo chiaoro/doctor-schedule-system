@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>醫師排班系統</title>
+</head>
+<body>
+  <h1>排班填寫表單</h1>
+  <label>醫師姓名：<input type="text" id="doctor"></label><br><br>
+  <label>任務：<input type="text" id="task"></label><br><br>
+  <label>時段：<input type="text" id="shift"></label><br><br>
+  <label>日期：<input type="date" id="date"></label><br><br>
+  <button onclick="submitData()">送出</button>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/你的AppsScript網址/exec"; // 改成你的網址
+
+    function submitData() {
+      const doctor = document.getElementById("doctor").value;
+      const task = document.getElementById("task").value;
+      const shift = document.getElementById("shift").value;
+      const date = document.getElementById("date").value;
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ doctor, task, shift, date }),
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(res => res.text())
+      .then(msg => alert(msg));
+    }
+  </script>
+</body>
+</html>
