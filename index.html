@@ -13,7 +13,7 @@
   <button onclick="submitData()">送出</button>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw2n0AuSUmtFZhUqPHmVakZg_MN8ez0aiz_kENbMqtB0jOCgk6QdLzk9G2pwd6uLLuSsA/exec"; // 改成你的網址
+    const API_URL = "https://script.google.com/macros/s/AKfycbw2n0AuSUmtFZhUqPHmVakZg_MN8ez0aiz_kENbMqtB0jOCgk6QdLzk9G2pwd6uLLuSsA/exec";
 
     function submitData() {
       const doctor = document.getElementById("doctor").value;
@@ -21,13 +21,28 @@
       const shift = document.getElementById("shift").value;
       const date = document.getElementById("date").value;
 
+      // 基本驗證（空值）
+      if (!doctor || !task || !shift || !date) {
+        alert("請填寫完整欄位");
+        return;
+      }
+
       fetch(API_URL, {
         method: "POST",
         body: JSON.stringify({ doctor, task, shift, date }),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .then(res => res.text())
-      .then(msg => alert(msg));
+      .then((res) => res.text())
+      .then((msg) => {
+        alert("✅ 成功送出！");
+        console.log(msg);
+      })
+      .catch((err) => {
+        alert("❌ 發生錯誤：" + err.message);
+        console.error(err);
+      });
     }
   </script>
 </body>
