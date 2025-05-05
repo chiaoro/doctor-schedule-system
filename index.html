@@ -10,22 +10,25 @@
   <label>任務：<input type="text" id="task"></label><br><br>
   <label>時段：<input type="text" id="shift"></label><br><br>
   <label>日期：<input type="date" id="date"></label><br><br>
-  <button onclick="submitData()">送出</button>
+  <button id="submitBtn">送出</button>
+
+  <p id="status"></p>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw2n0AuSUmtFZhUqPHmVakZg_MN8ez0aiz_kENbMqtB0jOCgk6QdLzk9G2pwd6uLLuSsA/exec";
-
-    function submitData() {
+    document.getElementById("submitBtn").addEventListener("click", function () {
       const doctor = document.getElementById("doctor").value;
       const task = document.getElementById("task").value;
       const shift = document.getElementById("shift").value;
       const date = document.getElementById("date").value;
 
-      // 基本驗證（空值）
+      const status = document.getElementById("status");
+
       if (!doctor || !task || !shift || !date) {
-        alert("請填寫完整欄位");
+        alert("⚠️ 請填寫所有欄位！");
         return;
       }
+
+      const API_URL = "https://script.google.com/macros/s/AKfycbw2n0AuSUmtFZhUqPHmVakZg_MN8ez0aiz_kENbMqtB0jOCgk6QdLzk9G2pwd6uLLuSsA/exec";
 
       fetch(API_URL, {
         method: "POST",
@@ -34,16 +37,16 @@
           "Content-Type": "application/json",
         },
       })
-      .then((res) => res.text())
-      .then((msg) => {
-        alert("✅ 成功送出！");
-        console.log(msg);
-      })
-      .catch((err) => {
-        alert("❌ 發生錯誤：" + err.message);
-        console.error(err);
-      });
-    }
+        .then((res) => res.text())
+        .then((msg) => {
+          status.innerText = "✅ 已成功送出！";
+          alert("✅ 資料送出成功！");
+        })
+        .catch((err) => {
+          status.innerText = "❌ 發送失敗：" + err;
+          alert("❌ 發生錯誤：" + err.message);
+        });
+    });
   </script>
 </body>
 </html>
